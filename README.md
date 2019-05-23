@@ -88,7 +88,11 @@ def delete_message():
     session.commit()
     return "Deleted Message"
 ```
-
+## Referencias.
+1.  [https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm]
+2.  [https://en.wikipedia.org/wiki/Create,_read,_update_and_delete]
+3.  [https://www.mulesoft.com/resources/api/what-is-an-api]
+4.  
 ### Install SQLAlchemy
 ```
 pip install sqlAlchemy
