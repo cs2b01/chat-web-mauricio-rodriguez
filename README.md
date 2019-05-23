@@ -2,7 +2,7 @@
 
 ![alt text][ui]
 
-[ui]: https://github.com/cs2b01/uniform-interface/images/ui3.png "Uniform Interface"
+[ui]: https://github.com/cs2b01/uniform-interface/blob/master/ui3.png "Uniform Interface"
 
 * The Uniform Interface refers to a **standard** way to do something regardless of what the specific activity is. 
 
