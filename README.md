@@ -1,5 +1,13 @@
 # Uniform Interface
 
+![alt text][motivation]
+
+[motivation]: https://github.com/cs2b01/uniform-interface/blob/master/connector.png "Motivation"
+
+## Problem
+
+
+## Solution
 ![alt text][ui]
 
 [ui]: https://github.com/cs2b01/uniform-interface/blob/master/ui3.png "Uniform Interface"
