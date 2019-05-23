@@ -92,7 +92,7 @@ def delete_message():
 1.  [https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm]
 2.  [https://en.wikipedia.org/wiki/Create,_read,_update_and_delete]
 3.  [https://www.mulesoft.com/resources/api/what-is-an-api]
-4.  
+4.  [https://github.com/cs2b01/uniform-interface/blob/master/ebook-UndisturbedREST_v1.pdf]
 ### Install SQLAlchemy
 ```
 pip install sqlAlchemy
