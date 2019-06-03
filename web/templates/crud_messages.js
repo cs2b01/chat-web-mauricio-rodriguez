@@ -1,5 +1,7 @@
 $(function(){
     var url = "http://127.0.0.1:5000/messages";
+
+
     $("#grid").dxDataGrid({
         dataSource: DevExpress.data.AspNet.createStore({
             key: "id",
@@ -34,10 +36,10 @@ $(function(){
         }, {
             dataField: "content"
         }, {
-            dataField: "sent on"
+            dataField: "sent_on",
             allowEditing: false
         }, {
-            dataField: "user_from.username"
+            dataField: "user_from.username",
             caption: "User from",
             lookup: {
                     dataSource: DevExpress.data.AspNet.createStore({
@@ -49,9 +51,9 @@ $(function(){
                     }),
                     displayExpr: "username"
                 }
-        }, {
-            dataField: "user_to.username"
-            caption: "User from",
+      }, {
+            dataField: "user_to.username",
+            caption: "User to",
             lookup: {
                     dataSource: DevExpress.data.AspNet.createStore({
                         key: "id",
@@ -63,5 +65,6 @@ $(function(){
                     displayExpr: "username"
                 }
         }, ],
+
     }).dxDataGrid("instance");
 });
