@@ -22,10 +22,8 @@ def create_message():
     message = entities.Message(
         content=c['content'],
         sent_on=c[2019],
-        user_from_id=c[1],
-        user_to_id=c[2],
-        user_from = c[entities.User.username],
-        user_to=c[entities.User.username]
+        user_from = c['user']['username']['id'],
+        user_to= c['user']['username']['id']
     )
     session = db.getSession(engine)
     session.add(message)
