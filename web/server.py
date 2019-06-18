@@ -16,56 +16,6 @@ def index():
 def static_content(content):
     return render_template(content)
 
-@app.route('/messages', methods = ['POST'])
-def create_message():
-    c =  json.loads(request.form['values'])
-    message = entities.Message(
-        content=c['content'],
-        user_from_id=c['user_from']['username']['id'],
-        user_to_id=c['user_to']['username']['id']
-    )
-    session = db.getSession(engine)
-    session.add(message)
-    session.commit()
-    return 'Created Message'
-
-@app.route('/messages', methods = ['GET'])
-def get_messages():
-    session = db.getSession(engine)
-    dbResponse = session.query(entities.Message)
-    data = dbResponse[:]
-    return Response(json.dumps(data, cls=connector.AlchemyEncoder), mimetype='application/json')
-
-@app.route('/messages', methods = ['PUT'])
-def update_message():
-    session = db.getSession(engine)
-    id = request.form['key']
-    message = session.query(entities.Message).filter(entities.Message.id == id).first()
-    c = json.loads(request.form['values'])
-    for key in c.keys():
-        setattr(message, key, c[key])
-    session.add(message)
-    session.commit()
-    return 'Updated Message'
-
-@app.route('/messages', methods = ['DELETE'])
-def delete_message():
-    id = request.form['key']
-    session = db.getSession(engine)
-    messages = session.query(entities.Message).filter(entities.Message.id == id)
-    for message in messages:
-        session.delete(message)
-    session.commit()
-    return "Deleted message"
-
-@app.route('/messages/<id>', methods = ['GET'])
-def get_message(id):
-    db_session = db.getSession(engine)
-    message = db_session.query(entities.Message).filter(entities.Message.id == id)
-    for message in message:
-        js = json.dumps(message, cls=connector.AlchemyEncoder)
-        return  Response(js, status=200, mimetype='application/json')
-
 @app.route('/users', methods = ['POST'])
 def create_user():
     c =  json.loads(request.form['values'])
@@ -109,29 +59,74 @@ def delete_user():
     session.commit()
     return "Deleted User"
 
-@app.route('/authenticate',methods=['POST'])
+@app.route('/authenticate', methods = ["POST"])
 def authenticate():
-    #get data form request
-    username= request.form['username']
-    password= request.form['password']
-    # look in database
+    message = json.loads(request.data)
+    username = message['username']
+    password = message['password']
+    #2. look in database
     db_session = db.getSession(engine)
-
-    #solucion 1 cost: n^3
-    #users = db_session.query(entities.user)
-    '''for user in users:
-        if user.username == username and user.password == password:
-            return render_template("success.html")
-    return render_template("fail.html")'''
-    #solucion 2
     try:
-        user= db_session.query(entities.User
-        ).filter(entities.User.username== username
-        ).filter(entities.User.password == password
-        ).one()
-        return render_template("success.html")
+        user = db_session.query(entities.User
+            ).filter(entities.User.username == username
+            ).filter(entities.User.password == password
+            ).one()
+        session['logged_user']= user.id
+        message = {'message': 'Authorized'}
+        return Response(message, status=200, mimetype='application/json')
     except Exception:
-        return render_template("fail.html")
+        message = {'message': 'Unauthorized'}
+        return Response(message, status=401, mimetype='application/json')
+
+@app.route('/current', methods = ["GET"])
+def current_user():
+    db_session = db.getSession(engine)
+    user = db_session.query(entities.User).filter(
+        entities.User.id == session['logged_user']
+        ).first()
+    return Response(json.dumps(
+            user,
+            cls=connector.AlchemyEncoder),
+            mimetype='application/json'
+        )
+
+@app.route('/logout',methods=["GET"])
+def logout():
+    session.clear()
+    return render_template('index.html')
+
+@app.route('/messages/<user_from_id>/<user_to_id>', methods = ['GET'])
+def get_messages(user_from_id, user_to_id ):
+    db_session = db.getSession(engine)
+    messages = db_session.query(entities.Message).filter(
+        entities.Message.user_from_id == user_from_id).filter(
+        entities.Message.user_to_id == user_to_id
+    )
+    data = []
+    for message in messages:
+        data.append(message)
+    return Response(json.dumps(data, cls=connector.AlchemyEncoder), mimetype='application/json')
+
+
+@app.route('/create/messages', methods = ["POST"])
+def create_message():
+    data = json.loads(request.data)
+    user_to_id = data['user_to_id']
+    user_from_id = data['user_from_id']
+    content = data['content']
+
+    message = entities.Message(
+    user_to_id = user_to_id,
+    user_from_id = user_from_id,
+    content = content)
+
+    #2. Save in database
+    db_session = db.getSession(engine)
+    db_session.add(message)
+    db_session.commit()
+
+    response = {'message': 'created'}
+    return Response(json.dumps(response, cls=connector.AlchemyEncoder), status=200, mimetype='application/json')
 
 if __name__ == '__main__':
     app.secret_key = ".."

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My chat</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/chat.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="/static/js/libs/bootstrap.min.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src = "chat.js"></script>
+</head>
+<body onload="whoami()">
+
+<table width="100%" border="1px solid">
+    <tr>
+        <td width="25%">
+            <div  class="alert alert-primary" role="alert">
+                <label id="cu_username"></label>
+                <br/>
+                <label id="cu_name"></label>
+            </div>
+            <div id="allusers">
+
+            </div>
+
+        </td>
+        <td width="75%">
+            <div id="messages">Mensajes</div>
+                <input type="text" id="postmessage"/>
+                <input type="button" onclick="sendMessage()" value="send message">
+        </td>
+    </tr>
+</table>
+
+</body>
