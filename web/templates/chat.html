@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <title>My chat</title>
     <link rel="stylesheet" type="text/css" href="/static/css/chat.css">
@@ -8,12 +9,13 @@
     <script src="/static/js/libs/bootstrap.min.js" ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src = "chat.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/chat2.css">
 </head>
 <body onload="whoami()">
+<div id ="frame">
+<div id="sidepanel">
+    <div >
 
-<table width="100%" border="1px solid">
-    <tr>
-        <td width="25%">
             <div  class="alert alert-primary" role="alert">
                 <label id="cu_username"></label>
                 <br/>
@@ -22,14 +24,14 @@
             <div id="allusers">
 
             </div>
+</div>
+</div>
+<div class = "content">
+            <label id="their_username"></label>
+            <div id="messages"></div>
+                <input type="text" id="postmessage" value="Escribe aqui..."/>
 
-        </td>
-        <td width="75%">
-            <div id="messages">Mensajes</div>
-                <input type="text" id="postmessage"/>
                 <input type="button" onclick="sendMessage()" value="send message">
-        </td>
-    </tr>
-</table>
-
+    </div>
+</div>
 </body>

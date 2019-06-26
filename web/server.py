@@ -1,6 +1,7 @@
 from flask import Flask,render_template, request, session, Response, redirect
 from database import connector
 from model import entities
+from datetime import datetime
 import json
 
 db = connector.Manager()
@@ -97,15 +98,33 @@ def logout():
 
 @app.route('/messages/<user_from_id>/<user_to_id>', methods = ['GET'])
 def get_messages(user_from_id, user_to_id ):
-    db_session = db.getSession(engine)
-    messages = db_session.query(entities.Message).filter(
-        entities.Message.user_from_id == user_from_id).filter(
-        entities.Message.user_to_id == user_to_id
-    )
-    data = []
-    for message in messages:
-        data.append(message)
-    return Response(json.dumps(data, cls=connector.AlchemyEncoder), mimetype='application/json')
+        db_session = db.getSession(engine)
+        sent_messages = db_session.query(entities.Message).filter(
+            entities.Message.user_from_id == user_from_id).filter(
+            entities.Message.user_to_id == user_to_id
+        )
+        received_messages = db_session.query(entities.Message).filter(
+            entities.Message.user_from_id == user_to_id).filter(
+            entities.Message.user_to_id == user_from_id
+        )
+#        for message in sent_messages:
+ #           data.append(message)
+  #      for message in received_messages:
+  #          data.append(message)
+   # else:
+    #    db_session = db.getSession(engine)
+
+    #   sent_messages = db_session.query(entities.Message).filter(
+     #       entities.Message.user_from_id == user_from_id).filter(
+      #      entities.Message.user_to_id == user_to_id
+       # )
+        data = []
+
+        message3=sent_messages.union(received_messages)
+        for message in message3:
+            data.append(message)
+
+        return Response(json.dumps(data, cls=connector.AlchemyEncoder), mimetype='application/json')
 
 
 @app.route('/create/messages', methods = ["POST"])
