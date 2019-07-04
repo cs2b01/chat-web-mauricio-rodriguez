@@ -20,7 +20,7 @@ function getData(){
                 if(response['status']==401){
                 $('#action').append('<img width="30" height="30" src="images/equis.jpg"/>');
                 }else{
-                var url = 'http://'+ document.domain+ ':'+ location.port + '/static/chat2.html';
+                var url = 'http://'+ document.domain+ ':'+ location.port + '/static/chat.html';
                 $(location).attr('href',url);
                 }
 

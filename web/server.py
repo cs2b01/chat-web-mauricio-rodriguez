@@ -72,9 +72,9 @@ def authenticate():
             ).filter(entities.User.username == username
             ).filter(entities.User.password == password
             ).one()
-        session['logged_user']= user.id
+        session['logged_user'] = user.id
         message = {'message': 'Authorized'}
-        return Response(message, status=200, mimetype='application/json')
+        return Response(json.dumps(message, cls= connector.AlchemyEncoder), status=200, mimetype='application/json')
     except Exception:
         message = {'message': 'Unauthorized'}
         return Response(message, status=401, mimetype='application/json')
